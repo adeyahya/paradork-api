@@ -9,4 +9,4 @@ app.use(bodyParser.json())
 
 require( './router/user-route' )( app )
 
-app.listen(3000)
+module.exports = app

@@ -1,10 +1,16 @@
 {
+  "scripts": {
+    "start": "./bin/www",
+    "test": "./node_modules/.bin/mocha test.js"
+  },
   "dependencies": {
     "body-parser": "^1.16.1",
     "config": "^1.25.1",
-    "dotenv": "^4.0.0",
     "express": "^4.14.1",
-    "mysql": "^2.13.0",
     "sequelize": "^3.30.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
   }
 }
