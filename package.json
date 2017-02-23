@@ -1,12 +1,14 @@
 {
   "scripts": {
     "start": "./bin/www",
-    "test": "./node_modules/.bin/mocha test.js"
+    "test": "./node_modules/.bin/mocha test.js",
+    "watch": "./node_modules/.bin/mocha -w app.js test.js"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
     "config": "^1.25.1",
     "express": "^4.14.1",
+    "mysql": "^2.13.0",
     "sequelize": "^3.30.2"
   },
   "devDependencies": {

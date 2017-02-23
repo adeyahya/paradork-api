@@ -7,6 +7,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-require( './router/user-route' )( app )
+app.set('models', require('./models'))
+
+require( './router' )( app )
 
 module.exports = app

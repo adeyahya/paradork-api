@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  "6"
+sudo: required
+notifications:
+  email: false
+services:
+  - mysql
+before_script:
+  - sudo mysql -e 'CREATE DATABASE paradork;'
