@@ -6,3 +6,5 @@ notifications:
   email: false
 services:
   - mongodb
+before_script:
+  - sudo npm i -g node-gyp
