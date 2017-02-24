@@ -6,6 +6,3 @@ notifications:
   email: false
 services:
   - mongodb
-before_install:
-  - "npm install -g node-gyp && node-gyp clean"
-  - "npm install bcrypt"

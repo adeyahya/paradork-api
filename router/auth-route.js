@@ -1,5 +1,5 @@
 let jwt = require('jsonwebtoken')
-let bcrypt = require('bcrypt');
+let PH = require('password-hash');
 
 module.exports = function( app ) {
 	let express = require('express')
@@ -27,23 +27,40 @@ module.exports = function( app ) {
 				})
 			}
 
-			bcrypt.compare(req.body.password, user.password).then(function(hash) {
-				if (!hash)
-					res.status(403).send({
+			if (!PH.verify(req.body.password, user.password)) {
+				res.status(403).send({
 						success: false,
 						message: 'Authentication failed. Wrong password.' 
 					})
+			}
 
-				let token = jwt.sign(user, app.get('superSecret'), {
-					expiresIn: '7d'
-				})
-
-				res.json({
-					success: true,
-					message: 'Enjoy your token!',
-					token: token
-				})
+			let token = jwt.sign(user, app.get('superSecret'), {
+				expiresIn: '7d'
 			})
+
+			res.json({
+				success: true,
+				message: 'Enjoy your token!',
+				token: token
+			})
+
+			// bcrypt.compare(req.body.password, user.password).then(function(hash) {
+			// 	if (!hash)
+			// 		res.status(403).send({
+			// 			success: false,
+			// 			message: 'Authentication failed. Wrong password.' 
+			// 		})
+
+			// 	let token = jwt.sign(user, app.get('superSecret'), {
+			// 		expiresIn: '7d'
+			// 	})
+
+			// 	res.json({
+			// 		success: true,
+			// 		message: 'Enjoy your token!',
+			// 		token: token
+			// 	})
+			// })
 		})
 	})
 
@@ -51,27 +68,23 @@ module.exports = function( app ) {
 		next()
 	})
 	.post(function(req, res, next) {
-		// Hashing password
-		const salt = 10
-		bcrypt.hash(req.body.password, salt)
-			.then(function(hash) {
-				req.body.password = hash
-				let newUser = User(req.body)
+		
+		req.body.password = PH.generate(req.body.password)
+		let newUser = User(req.body)
 
-				newUser.save(function(err, user) {
-					if (err) {
-						res.status(403).send({
-							success: false,
-							message: err
-						})
-					}
-
-					res.json({
-						success: true,
-						user: user
-					})
+		newUser.save(function(err, user) {
+			if (err) {
+				res.status(403).send({
+					success: false,
+					message: err
 				})
+			}
+
+			res.json({
+				success: true,
+				user: user
 			})
+		})
 	})
 
 	app.use('/', router)
