@@ -1,3 +1,5 @@
+let subdomain = require('express-subdomain')
+
 module.exports = function( app ) {
 	let express = require('express')
 	let router = express.Router()
@@ -20,5 +22,5 @@ module.exports = function( app ) {
 			})
 	})
 
-	app.use('/', router)
+	app.use(subdomain('api', router))
 }

@@ -9,6 +9,7 @@
     "config": "^1.25.1",
     "express": "^4.14.1",
     "express-handlebars": "^3.0.0",
+    "express-subdomain": "^1.0.5",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2"
   },

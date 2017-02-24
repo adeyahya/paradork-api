@@ -1,5 +1,6 @@
 let express = require('express')
 let exphbs = require('express-handlebars')
+let subdomain = require('express-subdomain')
 let app = express()
 let bodyParser = require('body-parser')
 
