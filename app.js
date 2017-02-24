@@ -4,6 +4,10 @@ let subdomain = require('express-subdomain')
 let app = express()
 let bodyParser = require('body-parser')
 
+// connect mongodb
+let mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost/paradork')
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
