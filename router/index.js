@@ -15,14 +15,17 @@ module.exports = function( app ) {
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
 				if (err) {
-					return res.json({ success: false, message: 'Failed to authenticate token' })
+					res.status(403).send({ 
+						success: false,
+						message: 'Failed to authenticate token' 
+					})
 				} else {
 					req.decoded = decoded
 					next()
 				}
 			})
 		} else {
-			return res.status(403).send({
+			res.status(403).send({
 				success: false,
 				message: 'No token provided'
 			})

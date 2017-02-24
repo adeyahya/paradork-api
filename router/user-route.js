@@ -53,11 +53,11 @@ module.exports = function( app ) {
 			if (user) {
 				user.remove(function(err) {
 					if (err) throw err
-					res.json({ success: true })
+					return res.json({ success: true })
 				})
+			} else {
+				return res.status(403).send({ success: false })
 			}
-
-			res.json({ success: false })
 		})
 	})
 

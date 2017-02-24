@@ -1,5 +1,12 @@
 let request = require('supertest')
 let app = require('./app')
+let xAccessToken = ""
+let data = {
+	firstname: "john",
+	lastname: "doe",
+	username: "johndoe",
+	password: "selamat"
+}
 
 describe('Requests to the root path', function() {
 	it('Returns a 200 status code', function(done) {
@@ -9,41 +16,33 @@ describe('Requests to the root path', function() {
 	})
 })
 
-describe('Request to user api', function() {
-	let data = {
-		firstname: "john",
-		lastname: "doe",
-		username: "johndoe",
-		password: "selamat"
-	}
-
-	it('Returns a 200 status code', (done) => {
+describe('Register new user', function() {
+	it('Return a 200 status code', function(done) {
 		request(app)
-			.post('/user')
+			.post('/register')
+			.send(data)
+			.expect(200, done)
+	})
+})
+
+describe('Login new user', function() {
+	it('Return success status code and return token', function(done) {
+		request(app)
+			.post('/auth')
 			.send(data)
 			.expect(200)
-			.expect(/firstname/i, done)
-		// this.timeout(15000)
-		// setTimeout(done, 1500)
+			.then((response) => {
+				xAccessToken = response.body.token
+				done()
+			})
 	})
+})
 
-	it('Returns json format', (done) => {
-		request(app)
-			.get('/user')
-			.expect('Content-Type', /json/, done)
-	})
-
-	it('Returns valid data', (done) => {
-		request(app)
-			.get('/user')
-			.expect(/johndoe/i, done)
-	})
-
-	it('Return success status', function(done) {
+describe('Delete user', function() {
+	it('Return success status code', function(done) {
 		request(app)
 			.delete('/user/johndoe')
+			.set('x-access-token', xAccessToken)
 			.expect(200, done)
-		// this.timeout(15000)
-		// setTimeout(done, 1500)
 	})
 })
