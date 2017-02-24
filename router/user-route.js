@@ -13,7 +13,7 @@ module.exports = function( app ) {
 		})
 	}
 
-	router.route('/api/user', function(req, res, next) {
+	router.route('/user', function(req, res, next) {
 		next()
 	})
 	.post(function(req, res, next) {
@@ -34,7 +34,7 @@ module.exports = function( app ) {
 	})
 
 
-	router.route('/api/user/:username', function(req, res, next) {
+	router.route('/user/:username', function(req, res, next) {
 		next()
 	})
 	.get((req, res, next) => {
@@ -43,14 +43,22 @@ module.exports = function( app ) {
 			.catch(data => res.send(data))
 	})
 	.delete((req,res,next) => {
-		getUser(req.params.username)
-			.then((user) => {
-				user.remove((err) => {
-					if (err) throw err
+		User.findOne({
+			username: req.params.username
+		}, function(err, user) {
+			if (err) {
+				throw err
+			}
 
+			if (user) {
+				user.remove(function(err) {
+					if (err) throw err
 					res.json({ success: true })
 				})
-			})
+			}
+
+			res.json({ success: false })
+		})
 	})
 
 	app.use('/', router)

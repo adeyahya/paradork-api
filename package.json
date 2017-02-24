@@ -2,7 +2,7 @@
   "scripts": {
     "start": "./bin/www",
     "test": "./node_modules/.bin/mocha test.js",
-    "watch": "./node_modules/.bin/mocha -w app.js test.js"
+    "watch": "./node_modules/.bin/mocha -w app.js test.js --timeout 10000"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
@@ -10,7 +10,9 @@
     "express": "^4.14.1",
     "express-handlebars": "^3.0.0",
     "express-subdomain": "^1.0.5",
+    "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.8.4",
+    "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2"
   },
