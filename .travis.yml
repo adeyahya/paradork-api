@@ -11,6 +11,6 @@ before_install:
 deploy:
   skip_cleanup: true
   provider: script
-  script: ./.travis/deploy.sh
+  script: chmod +x .travis/deploy && .travis/deploy.sh
   on:
     all_branches: true
