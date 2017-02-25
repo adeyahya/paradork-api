@@ -19,3 +19,6 @@ if [ $TRAVIS_BRANCH == "master" ] ; then
     git status # debug
     git commit -m "Deploy compressed files"
     git push -f deploy HEAD:master
+else
+    echo "No deploy script for branch '$TRAVIS_BRANCH'"
+fi
