@@ -53,7 +53,7 @@ module.exports = function( app ) {
 		newUser.save(function(err, user) {
 			if (err) {
 				res.status(err.status || 500)
-				return res.json({
+				return 	res.json({
 					message: err.message,
 					error: err
 				})
