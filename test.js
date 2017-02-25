@@ -5,7 +5,8 @@ let data = {
 	firstname: "john",
 	lastname: "doe",
 	username: "johndoe",
-	password: "selamat"
+	password: "selamat",
+	email: "johndoe@paradork.com"
 }
 
 describe('Requests to the root path', function() {
