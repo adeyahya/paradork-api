@@ -42,6 +42,24 @@ module.exports = function( app ) {
 			.then(data => res.json(data))
 			.catch(data => res.send(data))
 	})
+	.delete((req, res, next) => {
+		User.findOne({
+ 			username: req.params.username
+ 		}, function(err, user) {
+ 			if (err) {
+ 				throw err
+ 			}
+ 
+ 			if (user) {
+ 				user.remove(function(err) {
+ 					if (err) throw err
+ 					return res.json({ success: true })
+ 				})
+ 			} else {
+ 				return res.status(403).send({ success: false })
+ 			}
+ 		})
+	})
 
 	app.use('/', router)
 }

@@ -53,7 +53,7 @@ describe('Authentication', function() {
 	})
 })
 
-describe('Delete user', function() {
+describe('Show user', function() {
 	it('Return success status code', function(done) {
 		request(app)
 			.delete('/user/johndoe')
