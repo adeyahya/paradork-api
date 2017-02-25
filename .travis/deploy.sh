@@ -9,10 +9,9 @@ chmod 600 travis_rsa
 mv travis_rsa ~/.ssh/id_rsa
 
 if [ $TRAVIS_BRANCH == "master" ] ; then
-    cd html
     git init
         
-    git remote add deploy "deploy@kjaermaxi.me:/var/www/kjaermaxi.me"
+    git remote add deploy "travis@paradork.com:/var/www/paradork-api"
     git config user.name "Travis CI"
     git config user.email "adeyahyaprasetyo@gmail.com"
     
