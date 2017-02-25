@@ -7,6 +7,8 @@ let jwt = require('jsonwebtoken')
 
 // connect mongodb
 let mongoose = require('mongoose')
+// replace mongoose promises with nodejs promises
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/paradork')
 app.set('superSecret', 'thedarkzone')
 
