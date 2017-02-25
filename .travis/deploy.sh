@@ -18,6 +18,7 @@ if [ $TRAVIS_BRANCH == "master" ] ; then
     git add .
     git commit -m "Deploy"
     git push --force deploy master
+    yarn install
 else
     echo "No deploy script for branch '$TRAVIS_BRANCH'"
 fi
