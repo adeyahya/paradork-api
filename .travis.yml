@@ -1,13 +1,15 @@
 language: node_js
 node_js: '6'
 sudo: required
+addons:
+  ssh_known_hosts: paradork.com
 notifications:
   email: false
 services:
-- mongodb
+  - mongodb
 before_install:
-- openssl aes-256-cbc -K $encrypted_ff4d4c896f3c_key -iv $encrypted_ff4d4c896f3c_iv
-  -in travis_rsa.enc -out travis_rsa -d
+  - openssl aes-256-cbc -K $encrypted_ff4d4c896f3c_key -iv $encrypted_ff4d4c896f3c_iv -in travis_rsa.enc -out travis_rsa -d
+  - chmod 600 ~/.ssh/travis_rsa
 deploy:
   skip_cleanup: true
   provider: script
