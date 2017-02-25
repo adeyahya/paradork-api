@@ -38,6 +38,21 @@ describe('Login new user', function() {
 	})
 })
 
+describe('Authentication', function() {
+	it('Returns 403 code when token not provided', function(done) {
+		request(app)
+			.get('/user')
+			.expect(403, done)
+	})
+
+	it('Returns 200 ok when token provided', function(done) {
+		request(app)
+			.get('/user')
+			.set('x-access-token', xAccessToken)
+			.expect(200, done)
+	})
+})
+
 describe('Delete user', function() {
 	it('Return success status code', function(done) {
 		request(app)

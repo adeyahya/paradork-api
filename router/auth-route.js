@@ -1,5 +1,5 @@
 let jwt = require('jsonwebtoken')
-let PH = require('password-hash');
+let PasswordHash = require('password-hash');
 
 module.exports = function( app ) {
 	let express = require('express')
@@ -13,22 +13,15 @@ module.exports = function( app ) {
 		User.findOne({
 			username: req.body.username
 		}, function(err, user) {
-			if (err) {
-				res.status(403).send({
-					success: false,
-					message: err
-				})
-			}
-
 			if (!user) {
-				res.status(403).send({ 
+				return res.status(403).send({ 
 					success: false,
 					message: 'Authentication failed. User not found.' 
 				})
 			}
 
-			if (!PH.verify(req.body.password, user.password)) {
-				res.status(403).send({
+			if (!PasswordHash.verify(req.body.password, user.password)) {
+				return res.status(403).send({
 						success: false,
 						message: 'Authentication failed. Wrong password.' 
 					})
@@ -38,29 +31,11 @@ module.exports = function( app ) {
 				expiresIn: '7d'
 			})
 
-			res.json({
+			return res.json({
 				success: true,
 				message: 'Enjoy your token!',
 				token: token
 			})
-
-			// bcrypt.compare(req.body.password, user.password).then(function(hash) {
-			// 	if (!hash)
-			// 		res.status(403).send({
-			// 			success: false,
-			// 			message: 'Authentication failed. Wrong password.' 
-			// 		})
-
-			// 	let token = jwt.sign(user, app.get('superSecret'), {
-			// 		expiresIn: '7d'
-			// 	})
-
-			// 	res.json({
-			// 		success: true,
-			// 		message: 'Enjoy your token!',
-			// 		token: token
-			// 	})
-			// })
 		})
 	})
 
@@ -69,18 +44,22 @@ module.exports = function( app ) {
 	})
 	.post(function(req, res, next) {
 		
-		req.body.password = PH.generate(req.body.password)
+		if (req.body.password != null) {
+			req.body.password = PasswordHash.generate(req.body.password)
+		}
+
 		let newUser = User(req.body)
 
 		newUser.save(function(err, user) {
 			if (err) {
-				res.status(403).send({
-					success: false,
-					message: err
+				res.status(err.status || 500)
+				return res.json({
+					message: err.message,
+					error: err
 				})
 			}
 
-			res.json({
+			return res.json({
 				success: true,
 				user: user
 			})

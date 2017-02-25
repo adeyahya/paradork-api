@@ -1,38 +1,15 @@
-let jwt = require('jsonwebtoken')
-
 module.exports = function( app ) {
-	let routers = [
+	const routers = [
 		'user',
 		'auth'
 	]
 
-	let express = require('express')
-	let router = express.Router()
+	const linkToAuth = [
+		"/user"
+	]
 
-	router.use(function(req, res, next) {
-		let token = req.body.token || req.query.token || req.headers['x-access-token']
-
-		if (token) {
-			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
-				if (err) {
-					res.status(403).send({ 
-						success: false,
-						message: 'Failed to authenticate token' 
-					})
-				} else {
-					req.decoded = decoded
-					next()
-				}
-			})
-		} else {
-			res.status(403).send({
-				success: false,
-				message: 'No token provided'
-			})
-		}
-	})
-
-	app.use('/user', router)
+	require('./middleware/error-middleware')( app )
+	require('./middleware/auth-middleware')( app, linkToAuth )
 
 	routers.map((route) => {
 		require('./' + route + '-route')( app )
