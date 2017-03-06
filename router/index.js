@@ -2,11 +2,6 @@ module.exports = function( app ) {
 	const fs = require('fs')
 	const path = require('path')
 	const _ = require('lodash')
-	const routers = [
-		'user',
-		'auth',
-		'article'
-	]
 
 	const linkToAuth = [
 		"/user",
@@ -20,7 +15,6 @@ module.exports = function( app ) {
 	files = _.remove(files, (n) => {
 		return ['index.js','middleware'].indexOf(n) < 0
 	})
-
 
 	files.map((route) => {
 		require('./' + route)( app )
