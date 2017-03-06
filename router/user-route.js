@@ -3,16 +3,6 @@ module.exports = function( app ) {
 	let router = express.Router()
 	let User = app.get('models').User
 
-	let getUser = (username) => {
-		return new Promise((resolve, reject) => {
-			User.find({ username: username }, (err, user) => {
-				if (err) reject(err)
-
-				resolve(user)
-			})
-		})
-	}
-
 	router.route('/user', function(req, res, next) {
 		next()
 	})
@@ -38,9 +28,13 @@ module.exports = function( app ) {
 		next()
 	})
 	.get((req, res, next) => {
-		getUser(req.params.username)
-			.then(data => res.json(data))
-			.catch(data => res.send(data))
+		User.findOne({username: req.params.username})
+			.populate('articles')
+			.exec(function(err, user) {
+				if (err) throw err
+
+				return res.json(user)
+			})
 	})
 	.delete((req, res, next) => {
 		User.findOne({

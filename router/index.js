@@ -1,17 +1,28 @@
 module.exports = function( app ) {
+	const fs = require('fs')
+	const path = require('path')
+	const _ = require('lodash')
 	const routers = [
 		'user',
-		'auth'
+		'auth',
+		'article'
 	]
 
 	const linkToAuth = [
-		"/user"
+		"/user",
+		"/articles",
 	]
 
 	require('./middleware/error-middleware')( app )
 	require('./middleware/auth-middleware')( app, linkToAuth )
 
-	routers.map((route) => {
-		require('./' + route + '-route')( app )
+	let files = fs.readdirSync(path.resolve('router'))
+	files = _.remove(files, (n) => {
+		return ['index.js','middleware'].indexOf(n) < 0
+	})
+
+
+	files.map((route) => {
+		require('./' + route)( app )
 	})
 }

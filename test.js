@@ -1,6 +1,8 @@
 let request = require('supertest')
 let app = require('./app')
 let xAccessToken = ""
+let user_id = ""
+let slug = ""
 let data = {
 	firstname: "john",
 	lastname: "doe",
@@ -55,6 +57,42 @@ describe('Authentication', function() {
 })
 
 describe('Show user', function() {
+	it('Returns success status code', function(done) {
+		request(app)
+			.get(`/user/${data.username}`)
+			.set('x-access-token', xAccessToken)
+			.expect(200, done)
+	})
+})
+
+describe('Create article', function() {
+	it('Return success status code', function(done) {
+		request(app)
+			.post('/articles')
+			.set('x-access-token', xAccessToken)
+			.send({
+				_creator: data.username,
+				title: 'Lorem ipsum dolor sit amet.'
+			})
+			.then((response) => {
+				slug = response.body.slug
+				done()
+			})
+	})
+})
+
+describe('Show article', function() {
+	it('Return success status code', function(done) {
+		request(app)
+			.get(`/articles/${slug}`)
+			.set('x-access-token', xAccessToken)
+			.then((response) => {
+				done()
+			})
+	})
+})
+
+describe('Delete user', function() {
 	it('Return success status code', function(done) {
 		request(app)
 			.delete('/user/johndoe')
